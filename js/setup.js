@@ -8,10 +8,12 @@ import App from './App';
 import { configureStore, engine, sagaMiddleware } from './configureStore';
 import { initialStateDrawer as drawer,
     initialStateCardNavigation as cardNavigation, sideBarNavSaga } from './navigation';
+import { initialStateGame as game } from './game';
 
 const initialState = fromJS({
   drawer,
   cardNavigation,
+  game,
 });
 
 function* rootSaga() {

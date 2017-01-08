@@ -7,10 +7,12 @@ import filter from 'redux-storage-decorator-filter';
 import { combineReducers } from 'redux-immutable';
 import createSagaMiddleware from 'redux-saga';
 import { drawerReducer, cardStackReducer, NAVIGATE_TO } from './navigation';
+import { gameReducer } from './game';
 
 const reducer = storage.reducer(combineReducers({
   drawer: drawerReducer,
   cardNavigation: cardStackReducer,
+  game: gameReducer,
 }), merger);
 
 export const engine = filter(createEngine('my-save-key'),

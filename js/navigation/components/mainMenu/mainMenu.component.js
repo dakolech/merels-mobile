@@ -9,7 +9,7 @@ function MainMenu(props) {
     <Container>
       <Content>
         <List>
-          <ListItem iconLeft button onPress={() => props.pushRoute({ key: 'newGame', index: 1 }, props.navigationKey)} >
+          <ListItem iconLeft button onPress={() => props.pushRoute({ key: 'board', index: 1 }, props.navigationKey)} >
             <Icon name="md-list-box" />
             <Text>New Game</Text>
           </ListItem>
