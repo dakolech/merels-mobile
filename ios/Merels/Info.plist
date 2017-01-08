@@ -42,6 +42,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Andale Mono.ttf</string>
+		<string>merels.ttf</string>
 		<string>Arial Black.ttf</string>
 		<string>Arial.ttf</string>
 		<string>Comic Sans MS.ttf</string>

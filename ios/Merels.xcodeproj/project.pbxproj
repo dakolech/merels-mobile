@@ -25,6 +25,8 @@
 		13B7FE352D3C42F586DAD96C /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DBA512FD3BB45B8A32D4422 /* Arial Black.ttf */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2C8E24D41E22A7FD00094271 /* merels.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E24D31E22A7FD00094271 /* merels.ttf */; };
+		2C8E24D51E22A7FD00094271 /* merels.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E24D31E22A7FD00094271 /* merels.ttf */; };
 		33D35191A3A743D784AFC7E9 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7AC20050A744918B8DD88E /* libRNVectorIcons.a */; };
 		42E77B12DF614BD39B18068E /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB6653D2DB3948AAAA566F13 /* MaterialIcons.ttf */; };
 		46F379FCA2044CB391A58D2D /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19B5E7424B84412788D4A2CA /* Andale Mono.ttf */; };
@@ -232,6 +234,7 @@
 		19B5E7424B84412788D4A2CA /* Andale Mono.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Andale Mono.ttf"; path = "../node_modules/native-base/Fonts/Andale Mono.ttf"; sourceTree = "<group>"; };
 		21C384E90BAF4E3F8EBC5370 /* Comic Sans MS.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comic Sans MS.ttf"; path = "../node_modules/native-base/Fonts/Comic Sans MS.ttf"; sourceTree = "<group>"; };
 		27A1BA98AC304342A8E8981C /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		2C8E24D31E22A7FD00094271 /* merels.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = merels.ttf; path = "../icons/generated-font/font/merels.ttf"; sourceTree = "<group>"; };
 		33AEC63E367142DC8FEC0EAD /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		33E3C73A774849F58BF76616 /* SF-UI-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-UI-Text-Regular.otf"; path = "../node_modules/native-base/Fonts/SF-UI-Text-Regular.otf"; sourceTree = "<group>"; };
 		3B33EA6F521247A3BDAFE215 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -497,6 +500,7 @@
 				CB6653D2DB3948AAAA566F13 /* MaterialIcons.ttf */,
 				105BAFD4ACB9460CB0E3D137 /* Octicons.ttf */,
 				7452914B142F472B9314498C /* Zocial.ttf */,
+				2C8E24D31E22A7FD00094271 /* merels.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -783,6 +787,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C8E24D51E22A7FD00094271 /* merels.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,6 +809,7 @@
 				65756C5353774894A5F6780F /* SF-UI-Text-Regular.otf in Resources */,
 				C56DB413A76247E49BD06227 /* Skia.ttf in Resources */,
 				AD282B736CFC439CA373B2BE /* Times New Roman.ttf in Resources */,
+				2C8E24D41E22A7FD00094271 /* merels.ttf in Resources */,
 				129EDBF4F3D64BE1824D79E0 /* Entypo.ttf in Resources */,
 				E27C564C638D4803BB880495 /* EvilIcons.ttf in Resources */,
 				ACB35C381E0D7CB70055965D /* splash.png in Resources */,
