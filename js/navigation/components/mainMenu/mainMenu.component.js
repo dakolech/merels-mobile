@@ -2,18 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Content, Text, List, ListItem, Icon } from 'native-base';
-import sideBarNativeBaseTheme from './sideBarNativeBase.theme';
-import styles from './styles';
 import { pushRoute } from '../../navigation.actions';
 
-function SideBar(props) {
+function MainMenu(props) {
   return (
-    <Container theme={sideBarNativeBaseTheme} >
+    <Container>
       <Content>
         <List>
-          <ListItem iconLeft button onPress={() => props.pushRoute({ key: 'mainMenu', index: 1 }, props.navigationKey)} >
-            <Icon name="md-list-box" style={styles.icon} />
-            <Text>Menu</Text>
+          <ListItem iconLeft button onPress={() => props.pushRoute({ key: 'newGame', index: 1 }, props.navigationKey)} >
+            <Icon name="md-list-box" />
+            <Text>New Game</Text>
           </ListItem>
         </List>
       </Content>
@@ -21,7 +19,7 @@ function SideBar(props) {
   );
 }
 
-SideBar.propTypes = {
+MainMenu.propTypes = {
   pushRoute: React.PropTypes.func,
   navigationKey: React.PropTypes.string,
 };
@@ -34,4 +32,4 @@ const mapStateToProps = state => ({
   navigationKey: state.getIn(['cardNavigation', 'key']),
 });
 
-export const SideBarComponent = connect(mapStateToProps, mapDispatchToProps)(SideBar);
+export const MainMenuComponent = connect(mapStateToProps, mapDispatchToProps)(MainMenu);

@@ -4,7 +4,7 @@ import { BackAndroid, StatusBar, NavigationExperimental } from 'react-native';
 import { connect } from 'react-redux';
 import { Drawer } from 'native-base';
 import SplashScreen from 'react-native-splash-screen';
-import { popRoute, closeDrawer, SideBarComponent } from './navigation';
+import { popRoute, closeDrawer, SideBarComponent, MainMenuComponent } from './navigation';
 
 import { BlankPageComponent, SplashPageComponent } from './common';
 import { statusBarColor } from './themes/base-theme';
@@ -68,8 +68,9 @@ class AppNavigator extends Component {
     const switchCase = {
       splashscreen: <SplashPageComponent />,
       blankPage: <BlankPageComponent />,
+      mainMenu: <MainMenuComponent />,
     };
-    return switchCase[props.scene.route.key] || <BlankPageComponent />;
+    return switchCase[props.scene.route.key] || <MainMenuComponent />;
   }
 
   render() {

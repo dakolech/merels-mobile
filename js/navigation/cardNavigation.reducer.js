@@ -27,7 +27,7 @@ export const initialStateCardNavigation = fromJS({
   index: 0,
   routes: [
     {
-      key: 'blankPage',
+      key: 'mainMenu',
       index: 0,
     },
   ],
