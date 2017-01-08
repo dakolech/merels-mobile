@@ -7,7 +7,6 @@ import { Container, Content } from 'native-base';
 import { list } from 'react-immutable-proptypes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import fontelloConfig from '../../../icons/generated-font/config.json';
-import { pushRoute } from '../../navigation';
 import { HeaderComponent } from '../../common';
 import { styles } from './board.styles';
 import { setPawn } from '../game.actions';
@@ -23,7 +22,7 @@ function getIconName(box) {
   , '');
 }
 
-function renderBox(box, boxIndex, rowIndex) {
+function renderBox(box, boxIndex) {
   const iconName = getIconName(box);
   return !!iconName ?
     <Icon
@@ -75,18 +74,15 @@ function Board(props) {
 }
 
 Board.propTypes = {
-  pushRoute: React.PropTypes.func,
-  navigationKey: React.PropTypes.string,
   board: list,
   setPawn: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ pushRoute, setPawn }, dispatch);
+  return bindActionCreators({ setPawn }, dispatch);
 }
 
 const mapStateToProps = state => ({
-  navigationKey: state.getIn(['cardNavigation', 'key']),
   board: state.getIn(['game', 'board']),
 });
 
