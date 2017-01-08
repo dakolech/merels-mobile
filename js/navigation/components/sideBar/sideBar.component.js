@@ -91,7 +91,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   email: state.getIn('auth', 'currentUser', 'email'),
-  navigationKey: state.cardNavigation.key,
+  navigationKey: state.getIn(['cardNavigation', 'key']),
 });
 
 export const SideBarComponent = connect(mapStateToProps, bindAction)(SideBar);

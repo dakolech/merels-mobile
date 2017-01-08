@@ -4,7 +4,7 @@ import { closeDrawer } from './drawer.actions';
 
 function* navigateTo({ payload: { route, homeRoute, isSidebar } }) {
   const state = yield select();
-  const navigation = state.cardNavigation.toJS();
+  const navigation = state.get('cardNavigation').toJS();
   const currentRouteKey = navigation.routes[navigation.routes.length - 1].key;
 
   if (isSidebar) {

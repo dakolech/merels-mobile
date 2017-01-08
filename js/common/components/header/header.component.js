@@ -36,7 +36,7 @@ class HeaderCom extends Component {
       // TODO add shadow to header
       <Header style={styles.header}>
         {button}
-        <Title style={[styles.title, styles.shadowTextBrownBig]}>{this.props.title || 'Kick Off'}</Title>
+        <Title style={[styles.title, styles.shadowTextBrownBig]}>{this.props.title || 'Merels'}</Title>
         <Button transparent onPress={this.props.openDrawer}>
           <Icon name="md-menu" style={styles.iconMenu} />
         </Button>
@@ -54,7 +54,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  navigationKey: state.cardNavigation.key,
+  navigationKey: state.getIn(['cardNavigation', 'key']),
 });
 
 

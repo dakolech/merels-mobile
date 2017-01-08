@@ -124,8 +124,8 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state =>
   ({
-    drawerState: state.drawer.drawerState,
-    navigation: state.cardNavigation.toJS(),
+    drawerState: state.getIn(['drawer', 'drawerState']),
+    navigation: state.getIn(['cardNavigation']).toJS(),
   });
 
 export default connect(mapStateToProps, bindAction)(AppNavigator);

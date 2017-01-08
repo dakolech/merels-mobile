@@ -6,7 +6,7 @@ import merger from 'redux-storage-merger-immutablejs';
 import filter from 'redux-storage-decorator-filter';
 import { combineReducers } from 'redux-immutable';
 import createSagaMiddleware from 'redux-saga';
-import { drawerReducer, cardStackReducer } from './navigation';
+import { drawerReducer, cardStackReducer, NAVIGATE_TO } from './navigation';
 
 const reducer = storage.reducer(combineReducers({
   drawer: drawerReducer,
@@ -20,7 +20,7 @@ export const engine = filter(createEngine('my-save-key'),
   ['drawer', 'cardNavigation'],
 );
 
-const middleware = storage.createMiddleware(engine, []);
+const middleware = storage.createMiddleware(engine, [], [NAVIGATE_TO]);
 
 export const sagaMiddleware = createSagaMiddleware();
 
