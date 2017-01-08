@@ -1,4 +1,3 @@
-// Code goes here
 const pawnBox = '*';
 const horizontalConnection = '-';
 const verticalConnection = '|';
