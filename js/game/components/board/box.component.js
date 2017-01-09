@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import { map } from 'react-immutable-proptypes';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import { styles, boxSize } from './board.styles';
 import fontelloConfig from '../../../../icons/generated-font/config.json';
