@@ -46,3 +46,5 @@ function generateBoard(boardString) {
 }
 
 export const board = generateBoard(nineMerelsBoard);
+
+export const playerPawns = 9;

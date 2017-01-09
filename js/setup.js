@@ -8,7 +8,7 @@ import App from './App';
 import { configureStore, engine, sagaMiddleware } from './configureStore';
 import { initialStateDrawer as drawer,
     initialStateCardNavigation as cardNavigation, sideBarNavSaga } from './navigation';
-import { initialStateGame as game } from './game';
+import { initialStateGame as game, gameSaga } from './game';
 
 const initialState = fromJS({
   drawer,
@@ -19,6 +19,7 @@ const initialState = fromJS({
 function* rootSaga() {
   yield [
     fork(sideBarNavSaga),
+    fork(gameSaga),
   ];
 }
 
