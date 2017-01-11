@@ -1,16 +1,8 @@
-package com.kickoff;
+package com.merels;
 
-import android.os.Bundle;
 import com.facebook.react.ReactActivity;
-import com.cboy.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
-
-   @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);  // here
-        super.onCreate(savedInstanceState);
-    }
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -18,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "KickOff";
+        return "Merels";
     }
 }
