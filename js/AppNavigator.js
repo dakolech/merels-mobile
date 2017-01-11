@@ -27,7 +27,7 @@ class AppNavigator extends Component {
   }
 
   componentDidMount() {
-    SplashScreen.hide();
+    // SplashScreen.hide();
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const routes = this.props.navigation.routes;

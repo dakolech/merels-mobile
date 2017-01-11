@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, TouchableHighlight } from 'react-native';
+import { View, Text } from 'react-native';
 import { Container, Content } from 'native-base';
 import { list } from 'react-immutable-proptypes';
 
@@ -24,16 +24,15 @@ function Board(props) {
                   key={boxIndex}
                   style={{ width: boxSize, height: boxSize }}
                 >
-                  {box.get('isPawnBox') ?
-                    (<TouchableHighlight
+                  {box.get('isPawnBox') &&
+                    (<Text
+                      style={styles.touchable}
                       onPress={() => props.nextMove({ row: rowIndex, column: boxIndex })}
                     >
-                      <View>
-                        <BoxComponent key={boxIndex} box={box} />
-                      </View>
-                    </TouchableHighlight>) :
-                    <BoxComponent key={boxIndex} box={box} />
-                  }
+                      a
+                    </Text>
+                  )}
+                  <BoxComponent key={boxIndex} box={box} />
                   <PawnComponent key={boxIndex + 1} box={box} />
                 </View>
               ))}

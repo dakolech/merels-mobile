@@ -4,7 +4,7 @@
 
 import { StyleSheet } from 'react-native';
 
-export const boxSize = 20;
+export const boxSize = 40;
 
 export const styles = StyleSheet.create({
   boardIcon: {
@@ -19,9 +19,18 @@ export const styles = StyleSheet.create({
     left: 0,
     top: 0,
   },
+  touchable: {
+    color: 'rgba(0,0,0,0)',
+    position: 'absolute',
+    zIndex: 2,
+    left: 0,
+    top: 0,
+    width: boxSize,
+    height: boxSize,
+  },
   row: {
     flexDirection: 'row',
-    height: 100,
+    // height: 100,
     padding: 20,
   },
 });
