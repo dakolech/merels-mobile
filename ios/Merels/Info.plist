@@ -51,6 +51,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>merels-thicker.ttf</string>
 		<string>merels.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

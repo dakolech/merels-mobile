@@ -4,7 +4,7 @@
 
 import { StyleSheet } from 'react-native';
 
-export const boxSize = 40;
+export const boxSize = 20;
 
 export const styles = StyleSheet.create({
   boardIcon: {

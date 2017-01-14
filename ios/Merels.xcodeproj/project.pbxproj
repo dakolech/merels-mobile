@@ -40,6 +40,8 @@
 		2C8E25601E26E5A200094271 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E25511E26E5A200094271 /* Octicons.ttf */; };
 		2C8E25611E26E5A200094271 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E25521E26E5A200094271 /* Zocial.ttf */; };
 		2C8E25621E26E5A200094271 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E25521E26E5A200094271 /* Zocial.ttf */; };
+		2C8E256F1E2A328400094271 /* merels-thicker.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E256E1E2A328400094271 /* merels-thicker.ttf */; };
+		2C8E25701E2A328400094271 /* merels-thicker.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E256E1E2A328400094271 /* merels-thicker.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
@@ -216,6 +218,7 @@
 		2C8E25501E26E5A200094271 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		2C8E25511E26E5A200094271 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		2C8E25521E26E5A200094271 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		2C8E256E1E2A328400094271 /* merels-thicker.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "merels-thicker.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -358,6 +361,7 @@
 				2C8E254C1E26E5A200094271 /* EvilIcons.ttf */,
 				2C8E254D1E26E5A200094271 /* FontAwesome.ttf */,
 				2C8E254E1E26E5A200094271 /* Foundation.ttf */,
+				2C8E256E1E2A328400094271 /* merels-thicker.ttf */,
 				2C8E254F1E26E5A200094271 /* Ionicons.ttf */,
 				2C8E25501E26E5A200094271 /* MaterialIcons.ttf */,
 				2C8E25511E26E5A200094271 /* Octicons.ttf */,
@@ -703,6 +707,7 @@
 				2C8E25541E26E5A200094271 /* Entypo.ttf in Resources */,
 				2C8E25581E26E5A200094271 /* FontAwesome.ttf in Resources */,
 				2C8E255E1E26E5A200094271 /* MaterialIcons.ttf in Resources */,
+				2C8E25701E2A328400094271 /* merels-thicker.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,6 +720,7 @@
 				2C8E25591E26E5A200094271 /* Foundation.ttf in Resources */,
 				2C8E255B1E26E5A200094271 /* Ionicons.ttf in Resources */,
 				2C8E25531E26E5A200094271 /* Entypo.ttf in Resources */,
+				2C8E256F1E2A328400094271 /* merels-thicker.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				2C8E25611E26E5A200094271 /* Zocial.ttf in Resources */,
 				2C8E255D1E26E5A200094271 /* MaterialIcons.ttf in Resources */,

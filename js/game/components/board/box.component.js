@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { map } from 'react-immutable-proptypes';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import { styles, boxSize } from './board.styles';
-import fontelloConfig from '../../../../icons/generated-font/config.json';
+import fontelloConfig from '../../../../icons/generated-font-thicker/config.json';
 
 const Icon = createIconSetFromFontello(fontelloConfig);
 

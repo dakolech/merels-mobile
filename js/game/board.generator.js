@@ -68,7 +68,7 @@ function optimize(boardString) {
 }
 
 function generateBoard(boardString) {
-  const splittedBoard = optimize(boardString);
+  const splittedBoard = boardString.replace(/(\r\n|\n|\r)/gm, '').split(newLine).filter(Boolean);
   const horizontalSize = splittedBoard.length;
   const verticalSize = splittedBoard[0].length;
   let generatedBoard = fromJS(Array.from({ length: verticalSize }, () => Array.from({ length: horizontalSize })));
