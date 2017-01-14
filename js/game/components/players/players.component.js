@@ -8,31 +8,28 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './players.styles';
 import { PLAYER1, PLAYER2 } from '../../game.reducer';
 
+function PlayerTab({ player }) {
+  return (
+    <View>
+      <Text> {player.get('name')} </Text>
+      <View>
+        <FontAwesomeIcon
+          name="circle"
+          size={30}
+          color={player.get('color')}
+        />
+      </View>
+      <Text> Pawns in the hand: {player.get('pawnsInHand')} </Text>
+      <Text> Pawns on the board: {player.get('pawnsOnBoard')} </Text>
+    </View>
+  );
+}
+
 function Players({ [PLAYER1]: player1, [PLAYER2]: player2 }) {
   return (
     <View style={styles.container}>
-      <View>
-        <Text> {player1.get('name')} </Text>
-        <View>
-          <FontAwesomeIcon
-            name="circle"
-            size={30}
-            color={player1.get('color')}
-          />
-        </View>
-        <Text> Pawns in hand: {player1.get('pawnsInHand')} </Text>
-      </View>
-      <View>
-        <Text> {player2.get('name')} </Text>
-        <View>
-          <FontAwesomeIcon
-            name="circle"
-            size={30}
-            color={player2.get('color')}
-          />
-        </View>
-        <Text> Pawns in hand: {player2.get('pawnsInHand')} </Text>
-      </View>
+      <PlayerTab player={player1} />
+      <PlayerTab player={player2} />
     </View>
   );
 }
