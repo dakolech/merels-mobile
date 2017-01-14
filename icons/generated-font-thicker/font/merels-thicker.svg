@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2017 by original authors @ fontello.com</metadata>
+<defs>
+<font id="merels-thicker" horiz-adv-x="1000" >
+<font-face font-family="merels-thicker" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="ens" unicode="&#xe800;" d="M1000 284h-286c-23-65-74-116-140-139l1-295-150 0-1 295c-88 31-151 116-151 214 0 98 63 182 151 214l-1 277 150 0 1-276c65-23 117-75 140-140h286v-150z" horiz-adv-x="1000" />
+
+<glyph glyph-name="es" unicode="&#xe801;" d="M1000 284h-286c-23-65-75-117-140-139l1-295-150 0-1 295c-88 32-151 116-151 214 0 125 102 227 227 227 99 0 183-63 214-152h286v-150z" horiz-adv-x="1000" />
+
+<glyph glyph-name="ns" unicode="&#xe802;" d="M575-150l-150 0-2 1000 150 0 2-1000z" horiz-adv-x="1000" />
+
+<glyph glyph-name="we" unicode="&#xe803;" d="M1000 434v-150h-1000v150h1000z" horiz-adv-x="1000" />
+
+<glyph glyph-name="wen" unicode="&#xe804;" d="M1000 284h-286c-31-88-115-152-214-152-99 0-183 64-214 152h-286v150h286c23 65 74 116 138 139l-1 277 150 0 1-276c65-23 117-75 140-140h286v-150z" horiz-adv-x="1000" />
+
+<glyph glyph-name="wens" unicode="&#xe805;" d="M1000 284h-286c-23-65-74-116-140-139l1-295-150 0-1 295c-64 23-115 74-138 139h-286v150h286c23 65 73 116 138 139l-1 277 150 0 1-276c65-23 117-75 140-140h286v-150z" horiz-adv-x="1000" />
+
+<glyph glyph-name="wes" unicode="&#xe806;" d="M1000 284h-286c-23-65-75-117-140-139l1-295-150 0-1 295c-64 23-115 75-138 139h-286v150h286c31 89 115 152 214 152 99 0 183-63 214-152h286v-150z" horiz-adv-x="1000" />
+
+<glyph glyph-name="wn" unicode="&#xe807;" d="M727 359c0-125-102-227-227-227-99 0-183 64-214 152h-286v150h286c23 65 74 116 138 139l-1 277 150 0 1-276c89-31 153-116 153-215z" horiz-adv-x="1000" />
+
+<glyph glyph-name="wns" unicode="&#xe808;" d="M727 359c0-99-64-183-153-214l1-295-150 0-1 295c-64 23-115 74-138 139h-286v150h286c23 65 73 116 138 139l-1 277 150 0 1-276c89-31 153-116 153-215z" horiz-adv-x="1000" />
+
+<glyph glyph-name="ws" unicode="&#xe809;" d="M727 359c0-99-64-183-153-214l1-295-150 0-1 295c-64 23-115 75-138 139h-286v150h286c31 89 115 152 214 152 125 0 227-102 227-227z" horiz-adv-x="1000" />
+
+<glyph glyph-name="en" unicode="&#xe80a;" d="M1000 284h-286c-31-88-115-152-214-152-125 0-227 102-227 227 0 99 63 183 151 214l-1 277 150 0 1-276c65-23 117-75 140-140h286v-150z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
