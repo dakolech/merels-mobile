@@ -5,6 +5,7 @@
 import { StyleSheet } from 'react-native';
 
 export const boxSize = 20;
+export const padding = 20;
 
 export const styles = StyleSheet.create({
   boardIcon: {
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   pawnIcon: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 3,
     left: 0,
     top: 0,
   },
@@ -30,7 +31,27 @@ export const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    // height: 100,
-    padding: 20,
+    padding,
+  },
+  boardComponent: {
+    position: 'absolute',
+    zIndex: 1,
+    left: 0,
+    top: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gameComponent: {
+    position: 'absolute',
+    zIndex: 2,
+    left: 0,
+    top: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
   },
 });

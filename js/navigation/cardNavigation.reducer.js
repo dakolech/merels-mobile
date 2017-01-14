@@ -27,7 +27,7 @@ export const initialStateCardNavigation = fromJS({
   index: 0,
   routes: [
     {
-      key: 'mainMenu',
+      key: 'board',
       index: 0,
     },
   ],

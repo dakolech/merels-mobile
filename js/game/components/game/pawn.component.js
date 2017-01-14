@@ -2,17 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { map } from 'react-immutable-proptypes';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { styles, boxSize } from './board.styles';
+import { styles } from '../board.styles';
 import { PLAYER1, PLAYER2 } from '../../game.reducer';
 
 function Pawn(props) {
   return props.box.get('pawn') ?
-    <FontAwesomeIcon name="circle" size={boxSize} color={props[props.box.get('pawn')]} style={styles.pawnIcon} /> :
+    <FontAwesomeIcon
+      name="circle"
+      size={props.boxSize}
+      color={props[props.box.get('pawn')]}
+      style={styles.pawnIcon}
+    /> :
     null;
 }
 
 Pawn.propTypes = {
   box: map,
+  boxSize: React.PropTypes.number,
   [PLAYER1]: React.PropTypes.string,
   [PLAYER2]: React.PropTypes.string,
 };

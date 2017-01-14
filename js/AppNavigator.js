@@ -8,7 +8,7 @@ import { popRoute, closeDrawer, SideBarComponent, MainMenuComponent } from './na
 
 import { BlankPageComponent, SplashPageComponent } from './common';
 import { statusBarColor } from './themes/base-theme';
-import { BoardComponent } from './game';
+import { BoardContainerComponent } from './game';
 
 const {
   CardStack: NavigationCardStack,
@@ -70,7 +70,7 @@ class AppNavigator extends Component {
       splashscreen: <SplashPageComponent />,
       blankPage: <BlankPageComponent />,
       mainMenu: <MainMenuComponent />,
-      board: <BoardComponent />,
+      board: <BoardContainerComponent />,
     };
     return switchCase[props.scene.route.key] || <MainMenuComponent />;
   }

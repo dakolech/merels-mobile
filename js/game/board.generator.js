@@ -21,51 +21,51 @@ const nineMerelsBoard = `
 *-----*-----*!
 `;
 
-const nineMerelsBoardMini = `
-*--*--*!
-|*-*-*|!
-||***||!
-*** ***!
-||***||!
-|*-*-*|!
-*--*--*!
-`;
+// const nineMerelsBoardMini = `
+// *--*--*!
+// |*-*-*|!
+// ||***||!
+// *** ***!
+// ||***||!
+// |*-*-*|!
+// *--*--*!
+// `;
 
-function optimize(boardString) {
-  const board = boardString.replace(/(\r\n|\n|\r)/gm, '').split(newLine).filter(Boolean);
-  const neutralValues = [horizontalConnection, verticalConnection, ' '];
-  const rowsToSlice = board
-    .map((val, index) =>
-      val
-        .split('')
-        .every(item => neutralValues
-        .includes(item)) ?
-          index :
-          false,
-    )
-    .filter(Boolean);
+// function optimize(boardString) {
+//   const board = boardString.replace(/(\r\n|\n|\r)/gm, '').split(newLine).filter(Boolean);
+//   const neutralValues = [horizontalConnection, verticalConnection, ' '];
+//   const rowsToSlice = board
+//     .map((val, index) =>
+//       val
+//         .split('')
+//         .every(item => neutralValues
+//         .includes(item)) ?
+//           index :
+//           false,
+//     )
+//     .filter(Boolean);
 
-  const numberArray = Array.from({ length: board[0].length }, (_, i) => i);
+//   const numberArray = Array.from({ length: board[0].length }, (_, i) => i);
 
-  const columnsToSlice = numberArray
-    .map(index =>
-      board
-        .map(item => item[index])
-        .every(item => neutralValues
-        .includes(item)) ?
-          index :
-          false,
-    )
-    .filter(Boolean);
+//   const columnsToSlice = numberArray
+//     .map(index =>
+//       board
+//         .map(item => item[index])
+//         .every(item => neutralValues
+//         .includes(item)) ?
+//           index :
+//           false,
+//     )
+//     .filter(Boolean);
 
-  return board
-    .filter((val, index) => !rowsToSlice.includes(index))
-    .map(val => val
-      .split('')
-      .filter((_, index) => !columnsToSlice.includes(index))
-      .join(''),
-    );
-}
+//   return board
+//     .filter((val, index) => !rowsToSlice.includes(index))
+//     .map(val => val
+//       .split('')
+//       .filter((_, index) => !columnsToSlice.includes(index))
+//       .join(''),
+//     );
+// }
 
 function generateBoard(boardString) {
   const splittedBoard = boardString.replace(/(\r\n|\n|\r)/gm, '').split(newLine).filter(Boolean);
@@ -82,10 +82,10 @@ function generateBoard(boardString) {
       const southChar = horIndex < horizontalSize - 1 ? splittedBoard[horIndex + 1][vertIndex] : false;
       generatedBoard = generatedBoard.setIn([vertIndex, horIndex], fromJS({
         isPawnBox: char === pawnBox,
-        N: northChar === verticalConnection || (northChar === pawnBox && char === verticalConnection) || (northChar === pawnBox && char === pawnBox),
-        S: southChar === verticalConnection || (southChar === pawnBox && char === verticalConnection) || (southChar === pawnBox && char === pawnBox),
-        W: westChar === horizontalConnection || (westChar === pawnBox && char === horizontalConnection) || (westChar === pawnBox && char === pawnBox),
-        E: eastChar === horizontalConnection || (eastChar === pawnBox && char === horizontalConnection) || (eastChar === pawnBox && char === pawnBox),
+        N: northChar === verticalConnection || (northChar === pawnBox && char === verticalConnection),
+        S: southChar === verticalConnection || (southChar === pawnBox && char === verticalConnection),
+        W: westChar === horizontalConnection || (westChar === pawnBox && char === horizontalConnection),
+        E: eastChar === horizontalConnection || (eastChar === pawnBox && char === horizontalConnection),
         pawn: undefined,
       }));
     }
@@ -93,6 +93,17 @@ function generateBoard(boardString) {
   return generatedBoard;
 }
 
+function getIconName(box) {
+  return ['W', 'E', 'N', 'S'].reduce((acc, curr) =>
+    box.get(curr) ? acc + curr.toLowerCase() : acc
+  , '');
+}
+
+function convertToDraw(board) {
+  return board.map(column => column.map(box => getIconName(box)));
+}
+
 export const board = generateBoard(nineMerelsBoard);
+export const boardToDraw = convertToDraw(board);
 
 export const playerPawns = 9;

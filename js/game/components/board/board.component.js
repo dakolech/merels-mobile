@@ -1,60 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { View, Text } from 'react-native';
-import { Container, Content } from 'native-base';
+import { View } from 'react-native';
 import { list } from 'react-immutable-proptypes';
 
-import { HeaderComponent } from '../../../common';
-import { styles, boxSize } from './board.styles';
-import { nextMove } from '../../game.actions';
-import { PawnComponent } from './pawn.component';
+import { styles } from '../board.styles';
 import { BoxComponent } from './box.component';
 
 function Board(props) {
   return (
-    <Container>
-      <Content>
-        <HeaderComponent />
-        <View style={styles.row}>
-          {props.board.map((row, rowIndex) => (
-            <View key={rowIndex}>
-              {row.map((box, boxIndex) => (
-                <View
-                  key={boxIndex}
-                  style={{ width: boxSize, height: boxSize }}
-                >
-                  {box.get('isPawnBox') &&
-                    (<Text
-                      style={styles.touchable}
-                      onPress={() => props.nextMove({ row: rowIndex, column: boxIndex })}
-                    >
-                      a
-                    </Text>
-                  )}
-                  <BoxComponent key={boxIndex} box={box} />
-                  <PawnComponent key={boxIndex + 1} box={box} />
-                </View>
-              ))}
+    <View style={styles.row}>
+      {props.board.map((column, columnIndex) => (
+        <View key={columnIndex}>
+          {column.map((box, boxIndex) => (
+            <View
+              key={boxIndex}
+              style={{ width: props.boxSize, height: props.boxSize }}
+            >
+              <BoxComponent key={boxIndex} box={box} boxSize={props.boxSize} />
             </View>
           ))}
         </View>
-      </Content>
-    </Container>
+      ))}
+    </View>
   );
 }
 
 Board.propTypes = {
   board: list,
-  nextMove: React.PropTypes.func,
+  boxSize: React.PropTypes.number,
 };
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ nextMove }, dispatch);
-}
-
 const mapStateToProps = state => ({
-  board: state.getIn(['game', 'board']),
+  board: state.getIn(['game', 'boardToDraw']),
+  boxSize: state.getIn(['game', 'boxSize']),
 });
 
-export const BoardComponent = connect(mapStateToProps, mapDispatchToProps)(Board);
+export const BoardComponent = connect(mapStateToProps)(Board);

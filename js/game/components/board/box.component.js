@@ -1,22 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
-import { map } from 'react-immutable-proptypes';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
-import { styles, boxSize } from './board.styles';
+import { styles } from '../board.styles';
 import fontelloConfig from '../../../../icons/generated-font-thicker/config.json';
 
 const Icon = createIconSetFromFontello(fontelloConfig);
 
-function getIconName(box) {
-  return ['W', 'E', 'N', 'S'].reduce((acc, curr) =>
-    box.get(curr) ? acc + curr.toLowerCase() : acc
-  , '');
-}
-
-function Box({ box }) {
-  return getIconName(box) ?
+function Box({ box, boxSize }) {
+  return box ?
     <Icon
-      name={getIconName(box)}
+      name={box}
       size={boxSize}
       color="#900"
       style={styles.boardIcon}
@@ -25,7 +18,7 @@ function Box({ box }) {
 }
 
 Box.propTypes = {
-  box: map,
+  box: React.PropTypes.string,
 };
 
 export const BoxComponent = Box;

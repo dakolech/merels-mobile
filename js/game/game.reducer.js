@@ -1,12 +1,17 @@
 import { Map, fromJS } from 'immutable';
-import { board, playerPawns } from './board.generator';
+import { Dimensions } from 'react-native';
+import { board, playerPawns, boardToDraw } from './board.generator';
 import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD } from './game.actions';
+import { padding } from './components/board.styles';
 
 export const PLAYER1 = 'PLAYER1';
 export const PLAYER2 = 'PLAYER2';
 
+const boxSize = Math.floor(((Dimensions.get('window').width - (padding * 2)) / boardToDraw.size));
+
 export const initialStateGame = fromJS({
   board,
+  boardToDraw,
   [PLAYER1]: {
     pawnsInHand: playerPawns,
     pawnsOnBoard: 0,
@@ -18,6 +23,7 @@ export const initialStateGame = fromJS({
     color: '#0F0',
   },
   currentPlayer: PLAYER1,
+  boxSize,
 });
 
 // board: [[{
