@@ -16,14 +16,17 @@ export const initialStateGame = fromJS({
     pawnsInHand: playerPawns,
     pawnsOnBoard: 0,
     color: '#000',
+    name: 'Player 1',
   },
   [PLAYER2]: {
     pawnsInHand: playerPawns,
     pawnsOnBoard: 0,
     color: '#0F0',
+    name: 'Player 2',
   },
   currentPlayer: PLAYER1,
   boxSize,
+  nextMove: 'Player 1',
 });
 
 // board: [[{

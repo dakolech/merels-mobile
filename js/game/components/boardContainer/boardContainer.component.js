@@ -8,19 +8,29 @@ import { list } from 'react-immutable-proptypes';
 import { nextMove } from '../../game.actions';
 import { BoardComponent } from '../board';
 import { GameComponent } from '../game';
-import { styles } from '../board.styles';
+import { styles, padding } from '../board.styles';
+import { NextMoveComponent } from '../nextMove';
+import { PlayersComponent } from '../players';
 
 function BoardContainer(props) {
   return (
     <Container>
-      <Content>
-        <View style={styles.container}>
+      <Content style={styles.content}>
+        <View
+          style={[styles.container, { height: (props.boxSize * props.board.size) + (2 * padding) }]}
+        >
           <View style={styles.boardComponent}>
             <BoardComponent />
           </View>
           <View style={styles.gameComponent}>
             <GameComponent />
           </View>
+        </View>
+        <View style={styles.nextMove}>
+          <NextMoveComponent />
+        </View>
+        <View style={styles.players}>
+          <PlayersComponent />
         </View>
       </Content>
     </Container>
@@ -29,7 +39,7 @@ function BoardContainer(props) {
 
 BoardContainer.propTypes = {
   board: list,
-  nextMove: React.PropTypes.func,
+  boxSize: React.PropTypes.number,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -37,7 +47,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  board: state.getIn(['game', 'board']),
+  board: state.getIn(['game', 'boardToDraw']),
+  boxSize: state.getIn(['game', 'boxSize']),
 });
 
 export const BoardContainerComponent = connect(mapStateToProps, mapDispatchToProps)(BoardContainer);

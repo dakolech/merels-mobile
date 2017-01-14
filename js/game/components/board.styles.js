@@ -1,10 +1,5 @@
-// const React = require('react-native');
-
-// const { StyleSheet } = React;
-
 import { StyleSheet } from 'react-native';
 
-export const boxSize = 20;
 export const padding = 20;
 
 export const styles = StyleSheet.create({
@@ -26,8 +21,6 @@ export const styles = StyleSheet.create({
     zIndex: 2,
     left: 0,
     top: 0,
-    width: boxSize,
-    height: boxSize,
   },
   row: {
     flexDirection: 'row',
@@ -51,7 +44,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {
+  content: {
     flex: 1,
+    flexDirection: 'row',
+  },
+  container: {
+    height: 100,
+  },
+  nextMove: {
+    // flex: 1,
+    height: 50,
+  },
+  players: {
+    // flex: 1,
   },
 });
