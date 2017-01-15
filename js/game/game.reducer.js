@@ -1,8 +1,10 @@
 import { Map, fromJS } from 'immutable';
 import { Dimensions } from 'react-native';
 import { board, playerPawns, boardToDraw } from './board.generator';
-import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD } from './game.actions';
+import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
+    SET_NEXT_MOVE_TEXT } from './game.actions';
 import { padding } from './components/board.styles';
+import { putPawn } from './game.messages';
 
 export const PLAYER1 = 'PLAYER1';
 export const PLAYER2 = 'PLAYER2';
@@ -26,7 +28,7 @@ export const initialStateGame = fromJS({
   },
   currentPlayer: PLAYER1,
   boxSize,
-  nextMove: 'Player 1',
+  nextMove: putPawn('Player 1'),
 });
 
 // board: [[{
@@ -46,6 +48,9 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
     [REMOVE_PAWN_FROM_HAND]: () => state
       .updateIn([action.payload.player, 'pawnsInHand'], pawnsInHand => pawnsInHand - 1)
       .updateIn([action.payload.player, 'pawnsOnBoard'], pawnsOnBoard => pawnsOnBoard + 1),
+    [REMOVE_PAWN_FROM_BOARD]: () =>
+      state.setIn(['board', action.payload.row, action.payload.column, 'pawn'], undefined),
+    [SET_NEXT_MOVE_TEXT]: () => state.set('nextMove', action.payload.text),
   };
   const stateChangingFn: () => Map = actions[action.type];
   return !!stateChangingFn ? stateChangingFn() : state;
