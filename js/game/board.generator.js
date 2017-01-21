@@ -87,6 +87,8 @@ function generateBoard(boardString) {
         W: westChar === horizontalConnection || (westChar === pawnBox && char === horizontalConnection),
         E: eastChar === horizontalConnection || (eastChar === pawnBox && char === horizontalConnection),
         pawn: undefined,
+        row: horIndex,
+        column: vertIndex,
       }));
     }
   }
@@ -107,3 +109,4 @@ export const board = generateBoard(nineMerelsBoard);
 export const boardToDraw = convertToDraw(board);
 
 export const playerPawns = 9;
+export const millSize = 3;

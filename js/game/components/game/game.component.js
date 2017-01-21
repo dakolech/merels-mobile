@@ -11,9 +11,9 @@ import { PawnComponent } from './pawn.component';
 function Game(props) {
   return (
     <View style={styles.row}>
-      {props.board.map((row, rowIndex) => (
-        <View key={rowIndex}>
-          {row.map((box, boxIndex) => (
+      {props.board.map((column, columnIndex) => (
+        <View key={columnIndex}>
+          {column.map((box, boxIndex) => (
             <View
               key={boxIndex}
               style={{ width: props.boxSize, height: props.boxSize }}
@@ -21,7 +21,7 @@ function Game(props) {
               {box.get('isPawnBox') &&
                 (<Text
                   style={[styles.touchable, { width: props.boxSize, height: props.boxSize }]}
-                  onPress={() => props.nextMove({ row: rowIndex, column: boxIndex })}
+                  onPress={() => props.nextMove({ column: columnIndex, row: boxIndex })}
                 >
                   a
                 </Text>

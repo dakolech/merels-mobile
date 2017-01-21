@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { Container, Content } from 'native-base';
 import { list } from 'react-immutable-proptypes';
 
-import { nextMove } from '../../game.actions';
 import { BoardComponent } from '../board';
 import { GameComponent } from '../game';
 import { styles, padding } from '../board.styles';
@@ -43,7 +42,7 @@ BoardContainer.propTypes = {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ nextMove }, dispatch);
+  return bindActionCreators({ }, dispatch);
 }
 
 const mapStateToProps = state => ({

@@ -3,4 +3,5 @@ function generateMessage(text: string) {
 }
 
 export const putPawn = generateMessage('put pawn on the board');
+export const removePawn = generateMessage('remove opponent pawn from the board');
 
