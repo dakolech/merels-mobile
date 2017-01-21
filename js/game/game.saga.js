@@ -3,6 +3,16 @@ import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText } f
 import { putPawn, removePawn } from './game.messages';
 import { PLAYER1, PLAYER2 } from './game.reducer';
 
+function getNextBox(board, currentBox, direction) {
+  const tempBox = {
+    N: () => board.getIn([currentBox.get('column'), currentBox.get('row') - 1]),
+    S: () => board.getIn([currentBox.get('column'), currentBox.get('row') + 1]),
+    E: () => board.getIn([currentBox.get('column') + 1, currentBox.get('row')]),
+    W: () => board.getIn([currentBox.get('column') - 1, currentBox.get('row')]),
+  };
+  return tempBox[direction]();
+}
+
 function countPawnsInLine(board, player, selectedBox, direction, counter = 0) {
   let newCounter = counter;
   if (selectedBox.get('pawn') === player) {
@@ -11,13 +21,8 @@ function countPawnsInLine(board, player, selectedBox, direction, counter = 0) {
   if (!selectedBox.get(direction)) {
     return newCounter;
   }
-  const tempBox = {
-    N: board.getIn([selectedBox.get('column'), selectedBox.get('row') - 1]),
-    S: board.getIn([selectedBox.get('column'), selectedBox.get('row') + 1]),
-    E: board.getIn([selectedBox.get('column') + 1, selectedBox.get('row')]),
-    W: board.getIn([selectedBox.get('column') - 1, selectedBox.get('row')]),
-  };
-  return countPawnsInLine(board, player, tempBox[direction], direction, newCounter);
+
+  return countPawnsInLine(board, player, getNextBox(board, selectedBox, direction), direction, newCounter);
 }
 
 function isMill(board, row, column, player, millSize) {
