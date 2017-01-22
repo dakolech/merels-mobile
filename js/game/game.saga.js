@@ -1,5 +1,6 @@
+import { fromJS } from 'immutable';
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText } from './game.actions';
+import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, setMillInBox } from './game.actions';
 import { putPawn, removePawn } from './game.messages';
 import { PLAYER1, PLAYER2 } from './game.reducer';
 
@@ -13,26 +14,38 @@ function getNextBox(board, currentBox, direction) {
   return tempBox[direction]();
 }
 
-function countPawnsInLine(board, player, selectedBox, direction, counter = 0) {
-  let newCounter = counter;
+function countPawnsInLine(board, player, selectedBox, direction, acc = fromJS({ counter: 0, boxes: [] })) {
+  let newAcc = acc;
   if (selectedBox.get('pawn') === player) {
-    newCounter += 1;
+    newAcc = newAcc
+      .update('counter', i => i + 1)
+      .update('boxes', i => i.push([selectedBox.get('column'), selectedBox.get('row')]));
   }
   if (!selectedBox.get(direction)) {
-    return newCounter;
+    return newAcc;
   }
 
-  return countPawnsInLine(board, player, getNextBox(board, selectedBox, direction), direction, newCounter);
+  return countPawnsInLine(board, player, getNextBox(board, selectedBox, direction), direction, newAcc);
 }
 
-function isMill(board, row, column, player, millSize) {
+function findMill(board, row, column, player) {
   const selectedBox = board.getIn([column, row]);
 
-  const northLine = countPawnsInLine(board, player, selectedBox, 'N');
-  const southLine = countPawnsInLine(board, player, selectedBox, 'S');
-  const eastLine = countPawnsInLine(board, player, selectedBox, 'E');
-  const westLine = countPawnsInLine(board, player, selectedBox, 'W');
-  return (northLine + southLine + eastLine + westLine) >= (millSize - 1);
+  return fromJS({
+    N: countPawnsInLine(board, player, selectedBox, 'N'),
+    S: countPawnsInLine(board, player, selectedBox, 'S'),
+    E: countPawnsInLine(board, player, selectedBox, 'E'),
+    W: countPawnsInLine(board, player, selectedBox, 'W'),
+  });
+  // return (northLine + southLine + eastLine + westLine) >= (millSize - 1);
+}
+
+function isLineMill(millObject, direction1, direction2, millSize) {
+  return millObject.getIn([direction1, 'counter']) + millObject.getIn([direction2, 'counter']) >= (millSize - 1);
+}
+
+function setMillInBoxes(millObject, direction) {
+  return millObject.getIn([direction, 'boxes']).map(item => put(setMillInBox({ column: item[0], row: item[1] }))).toJS();
 }
 
 function* nextMove({ payload: { row, column } }) {
@@ -46,9 +59,22 @@ function* nextMove({ payload: { row, column } }) {
   if (pawnsInHand > 0) {
     yield put(setPawn({ row, column }));
     yield put(removePawnFromHand({ player }));
-    if (pawnsInHand <= 7 && isMill(board, row, column, player, millSize)) {
-      console.log('take one');
-      yield put(setNextMoveText({ text: removePawn(playerName) }));
+    if (pawnsInHand <= 7) {
+      const millObject = findMill(board, row, column, player);
+
+      if (isLineMill(millObject, 'N', 'S', millSize)) {
+        yield setMillInBoxes(millObject, 'N');
+        yield setMillInBoxes(millObject, 'S');
+        yield put(setMillInBox({ column, row }));
+        yield put(setNextMoveText({ text: removePawn(playerName) }));
+      }
+
+      if (isLineMill(millObject, 'E', 'W', millSize)) {
+        yield setMillInBoxes(millObject, 'E');
+        yield setMillInBoxes(millObject, 'W');
+        yield put(setMillInBox({ column, row }));
+        yield put(setNextMoveText({ text: removePawn(playerName) }));
+      }
     }
     yield put(setNextMoveText({ text: putPawn(opponentName) }));
   }

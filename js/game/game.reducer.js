@@ -2,7 +2,7 @@ import { Map, fromJS } from 'immutable';
 import { Dimensions } from 'react-native';
 import { board, playerPawns, boardToDraw, millSize } from './board.generator';
 import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
-    SET_NEXT_MOVE_TEXT } from './game.actions';
+    SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX } from './game.actions';
 import { padding } from './components/board.styles';
 import { putPawn } from './game.messages';
 
@@ -52,6 +52,7 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
     [REMOVE_PAWN_FROM_BOARD]: () =>
       state.setIn(['board', action.payload.column, action.payload.row, 'pawn'], undefined),
     [SET_NEXT_MOVE_TEXT]: () => state.set('nextMove', action.payload.text),
+    [SET_MILL_IN_BOX]: () => state.setIn(['board', action.payload.column, action.payload.row, 'isInMill'], true),
   };
   const stateChangingFn: () => Map = actions[action.type];
   return !!stateChangingFn ? stateChangingFn() : state;

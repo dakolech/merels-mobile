@@ -20,7 +20,11 @@ function Game(props) {
             >
               {box.get('isPawnBox') &&
                 (<Text
-                  style={[styles.touchable, { width: props.boxSize, height: props.boxSize }]}
+                  style={[
+                    styles.touchable,
+                    { width: props.boxSize, height: props.boxSize },
+                    box.get('isInMill') && styles.highlighted,
+                  ]}
                   onPress={() => props.nextMove({ column: columnIndex, row: boxIndex })}
                 >
                   a

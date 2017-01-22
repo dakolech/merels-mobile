@@ -27,6 +27,7 @@ export const NEXT_PLAYER = 'NEXT_PLAYER';
 export const REMOVE_PAWN_FROM_HAND = 'REMOVE_PAWN_FROM_HAND';
 export const REMOVE_PAWN_FROM_BOARD = 'REMOVE_PAWN_FROM_BOARD';
 export const SET_NEXT_MOVE_TEXT = 'SET_NEXT_MOVE_TEXT';
+export const SET_MILL_IN_BOX = 'SET_MILL_IN_BOX';
 
 function newAction(type) {
   return (payload): Action => ({ payload, type });
@@ -38,3 +39,4 @@ export const nextMove: (payload: setPawnType) => Action = newAction(NEXT_MOVE);
 export const removePawnFromHand: (payload: playerType) => Action = newAction(REMOVE_PAWN_FROM_HAND);
 export const removePawnFromBoard: (payload: playerType) => Action = newAction(REMOVE_PAWN_FROM_BOARD);
 export const setNextMoveText: (payload: nextMoveType) => Action = newAction(SET_NEXT_MOVE_TEXT);
+export const setMillInBox: (payload: setPawnType) => Action = newAction(SET_MILL_IN_BOX);

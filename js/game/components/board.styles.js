@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   pawnIcon: {
     position: 'absolute',
     zIndex: 3,
-    left: 0,
+    left: 1,
     top: 0,
   },
   touchable: {
@@ -57,5 +57,8 @@ export const styles = StyleSheet.create({
   },
   players: {
     // flex: 1,
+  },
+  highlighted: {
+    backgroundColor: 'rgba(0.5,0.5,0.5,0.5)',
   },
 });

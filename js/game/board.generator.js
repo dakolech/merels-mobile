@@ -89,6 +89,8 @@ function generateBoard(boardString) {
         pawn: undefined,
         row: horIndex,
         column: vertIndex,
+        isHighlighted: false,
+        isInMill: false,
       }));
     }
   }
