@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   touchable: {
     color: 'rgba(0,0,0,0)',
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 4,
     left: 0,
     top: 0,
   },
@@ -59,6 +59,9 @@ export const styles = StyleSheet.create({
     // flex: 1,
   },
   highlighted: {
-    backgroundColor: 'rgba(0.5,0.5,0.5,0.5)',
+    backgroundColor: 'rgba(0,0,255,0.5)',
+  },
+  highlightedMill: {
+    backgroundColor: 'rgba(255,0,0,0.5)',
   },
 });
