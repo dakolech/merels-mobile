@@ -3,14 +3,16 @@ import { Dimensions } from 'react-native';
 import { board, playerPawns, boardToDraw, millSize } from './board.generator';
 import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
     SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX, CHANGE_ACTION_TYPE, HIGHLIGHT_AVAILABLE_PAWN,
-    CLEAN_HIGHLIGHTED_PAWNS } from './game.actions';
+    CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_PAWN } from './game.actions';
 import { padding } from './components/board.styles';
-import { putPawn } from './game.messages';
+import { putPawnMessage } from './game.messages';
 
 export const PLAYER1 = 'PLAYER1';
 export const PLAYER2 = 'PLAYER2';
 export const PUT_ACTION = 'PUT_ACTION';
 export const TAKE_ACTION = 'TAKE_ACTION';
+export const SELECT_TO_MOVE = 'SELECT_TO_MOVE';
+export const MOVE_ACTION = 'MOVE_ACTION';
 
 const boxSize = Math.floor(((Dimensions.get('window').width - (padding * 2)) / boardToDraw.size));
 
@@ -32,8 +34,12 @@ export const initialStateGame = fromJS({
   currentPlayer: PLAYER1,
   currentAction: PUT_ACTION,
   boxSize,
-  nextMove: putPawn('Player 1'),
+  nextMove: putPawnMessage('Player 1'),
   millSize,
+  cacheSelectedPawn: {
+    column: undefined,
+    row: undefined,
+  },
 });
 
 // board: [[{
@@ -49,6 +55,8 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
   const actions = {
     [SET_PAWN]: () =>
       state.setIn(['board', action.payload.column, action.payload.row, 'pawn'], state.get('currentPlayer')),
+    [REMOVE_PAWN]: () =>
+      state.setIn(['board', action.payload.column, action.payload.row, 'pawn'], undefined),
     [NEXT_PLAYER]: () => state.update('currentPlayer', currentPlayer => currentPlayer === PLAYER1 ? PLAYER2 : PLAYER1),
     [REMOVE_PAWN_FROM_HAND]: () => state
       .updateIn([action.payload.player, 'pawnsInHand'], pawnsInHand => pawnsInHand - 1)
@@ -74,6 +82,12 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
           row.map(box => box.set('isHighlighted', false)),
         ),
       ),
+    [HIGHLIGHT_AVAILABLE_BOX]: () =>
+      state.setIn(['board', action.payload.column, action.payload.row, 'isHighlighted'], true),
+    [CACHE_PAWN_POSITION]: () =>
+      state
+        .setIn(['cacheSelectedPawn', 'column'], action.payload.column)
+        .setIn(['cacheSelectedPawn', 'row'], action.payload.row),
   };
   const stateChangingFn: () => Map = actions[action.type];
   return !!stateChangingFn ? stateChangingFn() : state;
