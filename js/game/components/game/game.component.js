@@ -24,7 +24,7 @@ function Game(props) {
                     styles.touchable,
                     { width: props.boxSize, height: props.boxSize },
                     box.get('isHighlighted') && styles.highlighted,
-                    box.get('isInMill') && styles.highlightedMill,
+                    box.get('isInMill') > 0 && styles.highlightedMill,
                   ]}
                   onPress={() => props.nextMove({ column: columnIndex, row: boxIndex })}
                 >

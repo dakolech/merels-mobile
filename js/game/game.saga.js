@@ -2,9 +2,10 @@ import { fromJS } from 'immutable';
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, setMillInBox,
     changeActionType, highlightAvailablePawns, removePawnFromBoard, cleanHighlightedPawns,
-    cachePawnPosition, highlightAvailableBox, removePawn } from './game.actions';
+    cachePawnPosition, highlightAvailableBox, removeMillInBox } from './game.actions';
 import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage } from './game.messages';
-import { PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE } from './game.reducer';
+import { PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
+    TAKE_AFTER_MOVE_ACTION } from './game.reducer';
 
 function getNextBox(board, currentBox, direction) {
   const tempBox = {
@@ -89,6 +90,64 @@ function findAvailableBoxes(board, selectedBox) {
   .map(({ column, row }) => put(highlightAvailableBox({ column, row })));
 }
 
+function findExistedMill(board, selectedBox, direction) {
+  const newBox = getNextBox(board, selectedBox, direction);
+  if (!newBox || !selectedBox.get(direction)) {
+    return false;
+  }
+  if (newBox.get('isInMill') > 0) {
+    return {
+      column: newBox.get('column'),
+      row: newBox.get('row'),
+    };
+  }
+
+  if (newBox.get('isPawnBox') && !!newBox.get('pawn')) {
+    return false;
+  }
+
+  return findExistedMill(board, newBox, direction);
+}
+
+function removeMillOnTheBoard(board, selectedBox) {
+  return [
+    findExistedMill(board, selectedBox, 'N'),
+    findExistedMill(board, selectedBox, 'S'),
+    findExistedMill(board, selectedBox, 'E'),
+    findExistedMill(board, selectedBox, 'W'),
+  ]
+  .filter(Boolean)
+  .map(({ column, row }) => put(removeMillInBox({ column, row })));
+}
+
+function* findMillOnTheBoard(board, selectedBox, player, millSize) {
+  const millObject = findMill(board, selectedBox, player);
+  const isVerticalMill = isLineMill(millObject, 'N', 'S', millSize);
+  const isHorizontalMill = isLineMill(millObject, 'E', 'W', millSize);
+
+  if (isVerticalMill) {
+    yield setMillInBoxes(millObject, 'N');
+    yield setMillInBoxes(millObject, 'S');
+  }
+
+  if (isHorizontalMill) {
+    yield setMillInBoxes(millObject, 'E');
+    yield setMillInBoxes(millObject, 'W');
+  }
+  return isVerticalMill || isHorizontalMill;
+}
+
+function* handleTakeMove(board, opponent, column, row, playerName, action) {
+  const availableOpponentPawns = countAvailablePawns(board, opponent);
+
+  if (availableOpponentPawns > 0) {
+    yield put(setMillInBox({ column, row }));
+    yield put(setNextMoveText({ text: removePawnMessage(playerName) }));
+    yield put(changeActionType({ type: action }));
+    yield put(highlightAvailablePawns({ player: opponent }));
+  }
+}
+
 function* nextMove({ payload: { row, column } }) {
   const state = yield select();
   const player = state.getIn(['game', 'currentPlayer']);
@@ -107,30 +166,10 @@ function* nextMove({ payload: { row, column } }) {
     yield put(setPawn({ row, column }));
     yield put(removePawnFromHand({ player }));
     if (pawnsInHand <= 7) {
-      const millObject = findMill(board, selectedBox, player);
-      const isVerticalMill = isLineMill(millObject, 'N', 'S', millSize);
-      const isHorizontalMill = isLineMill(millObject, 'E', 'W', millSize);
+      const isMill = yield findMillOnTheBoard(board, selectedBox, player, millSize);
 
-      if (isVerticalMill) {
-        yield setMillInBoxes(millObject, 'N');
-        yield setMillInBoxes(millObject, 'S');
-      }
-
-      if (isHorizontalMill) {
-        yield setMillInBoxes(millObject, 'E');
-        yield setMillInBoxes(millObject, 'W');
-      }
-
-
-      if (isVerticalMill || isHorizontalMill) {
-        const availableOpponentPawns = countAvailablePawns(board, opponent);
-
-        if (availableOpponentPawns > 0) {
-          yield put(setMillInBox({ column, row }));
-          yield put(setNextMoveText({ text: removePawnMessage(playerName) }));
-          yield put(changeActionType({ type: TAKE_ACTION }));
-          yield put(highlightAvailablePawns({ player: opponent }));
-        }
+      if (isMill) {
+        yield handleTakeMove(board, opponent, column, row, playerName, TAKE_ACTION);
       } else {
         yield put(setNextMoveText({ text: putPawnMessage(opponentName) }));
         yield put(nextPlayer());
@@ -151,31 +190,53 @@ function* nextMove({ payload: { row, column } }) {
     yield put(cleanHighlightedPawns());
     yield put(nextPlayer());
 
-    if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== 'TAKE_ACTION') {
+    if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== TAKE_ACTION) {
       yield put(changeActionType({ type: SELECT_TO_MOVE }));
       yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     }
   }
 
   if (currentAction === SELECT_TO_MOVE && selectedBox.get('pawn') === player) {
-    yield put(cachePawnPosition({ row, column }));
-    yield put(changeActionType({ type: MOVE_ACTION }));
-    yield put(setNextMoveText({ text: movePawnMessage(playerName) }));
-    yield findAvailableBoxes(board, selectedBox);
+    const availableBoxes = yield findAvailableBoxes(board, selectedBox);
+    if (availableBoxes.length > 0) {
+      yield put(cachePawnPosition({ row, column }));
+      yield put(changeActionType({ type: MOVE_ACTION }));
+      yield put(setNextMoveText({ text: movePawnMessage(playerName) }));
+    }
   }
 
   if (currentAction === MOVE_ACTION && selectedBox.get('pawn') === player) {
-    yield put(cachePawnPosition({ row, column }));
     yield put(cleanHighlightedPawns());
     yield findAvailableBoxes(board, selectedBox);
+    yield put(cachePawnPosition({ row, column }));
   }
 
   if (currentAction === MOVE_ACTION && selectedBox.get('isHighlighted')) {
-    yield put(removePawn({ row: cachedPawn.get('row'), column: cachedPawn.get('column') }));
+    yield put(removePawnFromBoard({ row: cachedPawn.get('row'), column: cachedPawn.get('column') }));
     yield put(setPawn({ row, column }));
     yield put(cleanHighlightedPawns());
+
+    const cachedPawnBox = board.getIn([cachedPawn.get('column'), cachedPawn.get('row')]);
+    if (cachedPawnBox.get('isInMill') > 0) {
+      yield put(removeMillInBox({ row: cachedPawnBox.get('row'), column: cachedPawnBox.get('column') }));
+      yield removeMillOnTheBoard(board, cachedPawnBox);
+    }
+    const isMill = yield findMillOnTheBoard(board, selectedBox, player, millSize);
+
+    if (isMill) {
+      yield handleTakeMove(board, opponent, column, row, playerName, TAKE_AFTER_MOVE_ACTION);
+    } else {
+      yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
+      yield put(changeActionType({ type: SELECT_TO_MOVE }));
+      yield put(nextPlayer());
+    }
+  }
+
+  if (currentAction === TAKE_AFTER_MOVE_ACTION && selectedBox.get('pawn') && selectedBox.get('isHighlighted')) {
+    yield put(removePawnFromBoard({ row, column }));
     yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     yield put(changeActionType({ type: SELECT_TO_MOVE }));
+    yield put(cleanHighlightedPawns());
     yield put(nextPlayer());
   }
 }

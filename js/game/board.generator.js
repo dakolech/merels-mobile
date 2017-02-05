@@ -90,7 +90,7 @@ function generateBoard(boardString) {
         row: horIndex,
         column: vertIndex,
         isHighlighted: false,
-        isInMill: false,
+        isInMill: 0,
       }));
     }
   }
