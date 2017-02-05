@@ -31,12 +31,15 @@ function countPawnsInLine(board, player, selectedBox, direction, acc = fromJS({ 
   return countPawnsInLine(board, player, getNextBox(board, selectedBox, direction), direction, newAcc);
 }
 
-function findMill(board, selectedBox, player) {
+function findMill(board, selectedBox, player, cachedPawn) {
+  const newBoard = cachedPawn ?
+    board.setIn([cachedPawn.get('column'), cachedPawn.get('row'), 'pawn'], undefined)
+    : board;
   return fromJS({
-    N: countPawnsInLine(board, player, selectedBox, 'N'),
-    S: countPawnsInLine(board, player, selectedBox, 'S'),
-    E: countPawnsInLine(board, player, selectedBox, 'E'),
-    W: countPawnsInLine(board, player, selectedBox, 'W'),
+    N: countPawnsInLine(newBoard, player, selectedBox, 'N'),
+    S: countPawnsInLine(newBoard, player, selectedBox, 'S'),
+    E: countPawnsInLine(newBoard, player, selectedBox, 'E'),
+    W: countPawnsInLine(newBoard, player, selectedBox, 'W'),
   });
 }
 
@@ -90,38 +93,35 @@ function findAvailableBoxes(board, selectedBox) {
   .map(({ column, row }) => put(highlightAvailableBox({ column, row })));
 }
 
-function findExistedMill(board, selectedBox, direction) {
+function findExistedMill(board, selectedBox, direction, acc = fromJS([])) {
   const newBox = getNextBox(board, selectedBox, direction);
+  let newAcc = acc;
   if (!newBox || !selectedBox.get(direction)) {
-    return false;
+    return newAcc;
   }
   if (newBox.get('isInMill') > 0) {
-    return {
+    newAcc = acc.push(fromJS({
       column: newBox.get('column'),
       row: newBox.get('row'),
-    };
+    }));
   }
 
-  if (newBox.get('isPawnBox') && !!newBox.get('pawn')) {
-    return false;
-  }
-
-  return findExistedMill(board, newBox, direction);
+  return findExistedMill(board, newBox, direction, newAcc);
 }
 
 function removeMillOnTheBoard(board, selectedBox) {
-  return [
+  return fromJS([
     findExistedMill(board, selectedBox, 'N'),
     findExistedMill(board, selectedBox, 'S'),
     findExistedMill(board, selectedBox, 'E'),
     findExistedMill(board, selectedBox, 'W'),
-  ]
-  .filter(Boolean)
-  .map(({ column, row }) => put(removeMillInBox({ column, row })));
+  ])
+  .flatten(1)
+  .map(item => put(removeMillInBox({ column: item.get('column'), row: item.get('row') }))).toJS();
 }
 
-function* findMillOnTheBoard(board, selectedBox, player, millSize) {
-  const millObject = findMill(board, selectedBox, player);
+function* findMillOnTheBoard(board, selectedBox, player, millSize, cachedPawn) {
+  const millObject = findMill(board, selectedBox, player, cachedPawn);
   const isVerticalMill = isLineMill(millObject, 'N', 'S', millSize);
   const isHorizontalMill = isLineMill(millObject, 'E', 'W', millSize);
 
@@ -221,7 +221,7 @@ function* nextMove({ payload: { row, column } }) {
       yield put(removeMillInBox({ row: cachedPawnBox.get('row'), column: cachedPawnBox.get('column') }));
       yield removeMillOnTheBoard(board, cachedPawnBox);
     }
-    const isMill = yield findMillOnTheBoard(board, selectedBox, player, millSize);
+    const isMill = yield findMillOnTheBoard(board, selectedBox, player, millSize, cachedPawn);
 
     if (isMill) {
       yield handleTakeMove(board, opponent, column, row, playerName, TAKE_AFTER_MOVE_ACTION);
