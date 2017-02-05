@@ -2,10 +2,11 @@ import { fromJS } from 'immutable';
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, setMillInBox,
     changeActionType, highlightAvailablePawns, removePawnFromBoard, cleanHighlightedPawns,
-    cachePawnPosition, highlightAvailableBox, removeMillInBox, highlightAllAvailableBoxes } from './game.actions';
-import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage } from './game.messages';
+    cachePawnPosition, highlightAvailableBox, removeMillInBox, highlightAllAvailableBoxes,
+    setWinner } from './game.actions';
+import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage, setWinnerMessage } from './game.messages';
 import { PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
-    TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP } from './game.reducer';
+    TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP, END_GAME } from './game.reducer';
 
 function getNextBox(board, currentBox, direction) {
   const tempBox = {
@@ -165,11 +166,6 @@ function* nextMove({ payload: { row, column } }) {
   const cachedPawn = state.getIn(['game', 'cacheSelectedPawn']);
   const moveOrJump = pawns => pawns === 3 ? SELECT_TO_JUMP : SELECT_TO_MOVE;
 
-  if (opponentPawnsInHand === 0 && pawnsInHand === 0 && currentAction !== 'TAKE_ACTION') {
-    yield put(changeActionType({ type: SELECT_TO_MOVE }));
-    yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
-  }
-
   if (pawnsInHand > 0 && currentAction === PUT_ACTION && !selectedBox.get('pawn')) {
     yield put(setPawn({ row, column }));
     yield put(removePawnFromHand({ player }));
@@ -264,10 +260,17 @@ function* nextMove({ payload: { row, column } }) {
     selectedBox.get('isInMill') === 0
   ) {
     yield put(removePawnFromBoard({ row, column, player: opponent }));
-    yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
-    yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
-    yield put(cleanHighlightedPawns());
-    yield put(nextPlayer());
+    if (opponentPawnsOnBoard === 3) {
+      yield put(setWinner({ player }));
+      yield put(setNextMoveText({ text: setWinnerMessage(playerName) }));
+      yield put(cleanHighlightedPawns());
+      yield put(changeActionType({ type: END_GAME }));
+    } else {
+      yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
+      yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
+      yield put(cleanHighlightedPawns());
+      yield put(nextPlayer());
+    }
   }
 }
 

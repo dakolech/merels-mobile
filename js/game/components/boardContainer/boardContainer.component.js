@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Container, Content } from 'native-base';
 import { list } from 'react-immutable-proptypes';
 
@@ -10,6 +10,7 @@ import { GameComponent } from '../game';
 import { styles, padding } from '../board.styles';
 import { NextMoveComponent } from '../nextMove';
 import { PlayersComponent } from '../players';
+import { resetGame } from '../../game.actions';
 
 function BoardContainer(props) {
   return (
@@ -31,6 +32,9 @@ function BoardContainer(props) {
         <View style={styles.players}>
           <PlayersComponent />
         </View>
+        <View>
+          <Text onPress={() => props.resetGame()}> Reset Game </Text>
+        </View>
       </Content>
     </Container>
   );
@@ -39,10 +43,11 @@ function BoardContainer(props) {
 BoardContainer.propTypes = {
   board: list,
   boxSize: React.PropTypes.number,
+  resetGame: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch);
+  return bindActionCreators({ resetGame }, dispatch);
 }
 
 const mapStateToProps = state => ({

@@ -4,7 +4,7 @@ import { board, playerPawns, boardToDraw, millSize } from './board.generator';
 import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
     SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX, CHANGE_ACTION_TYPE, HIGHLIGHT_AVAILABLE_PAWN,
     CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_MILL_IN_BOX,
-    HIGHLIGHT_ALL_AVAILABLE_BOXES } from './game.actions';
+    HIGHLIGHT_ALL_AVAILABLE_BOXES, SET_WINNER, RESET_GAME } from './game.actions';
 import { padding } from './components/board.styles';
 import { putPawnMessage } from './game.messages';
 
@@ -16,6 +16,7 @@ export const SELECT_TO_MOVE = 'SELECT_TO_MOVE';
 export const SELECT_TO_JUMP = 'SELECT_TO_JUMP';
 export const MOVE_ACTION = 'MOVE_ACTION';
 export const TAKE_AFTER_MOVE_ACTION = 'TAKE_AFTER_MOVE_ACTION';
+export const END_GAME = 'END_GAME';
 
 const boxSize = Math.floor(((Dimensions.get('window').width - (padding * 2)) / boardToDraw.size));
 
@@ -43,6 +44,7 @@ export const initialStateGame = fromJS({
     column: undefined,
     row: undefined,
   },
+  winner: undefined,
 });
 
 // board: [[{
@@ -99,6 +101,8 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
           row.map(box => box.get('isPawnBox') && !box.get('pawn') ? box.set('isHighlighted', true) : box),
         ),
       ),
+    [SET_WINNER]: () => state.set('winner', action.payload.player),
+    [RESET_GAME]: () => initialStateGame,
   };
   const stateChangingFn: () => Map = actions[action.type];
   return !!stateChangingFn ? stateChangingFn() : state;

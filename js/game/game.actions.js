@@ -45,6 +45,8 @@ export const HIGHLIGHT_AVAILABLE_BOX = 'HIGHLIGHT_AVAILABLE_BOX';
 export const HIGHLIGHT_ALL_AVAILABLE_BOXES = 'HIGHLIGHT_ALL_AVAILABLE_BOXES';
 export const CACHE_PAWN_POSITION = 'CACHE_PAWN_POSITION';
 export const CLEAN_HIGHLIGHTED_PAWNS = 'CLEAN_HIGHLIGHTED_PAWNS';
+export const SET_WINNER = 'SET_WINNER';
+export const RESET_GAME = 'RESET_GAME';
 
 function newAction(type) {
   return (payload): Action => ({ payload, type });
@@ -64,3 +66,5 @@ export const highlightAvailableBox: (payload: setPawnType) => Action = newAction
 export const highlightAllAvailableBoxes: () => Action = newAction(HIGHLIGHT_ALL_AVAILABLE_BOXES);
 export const cachePawnPosition: (payload: setPawnType) => Action = newAction(CACHE_PAWN_POSITION);
 export const cleanHighlightedPawns: () => Action = newAction(CLEAN_HIGHLIGHTED_PAWNS);
+export const setWinner: (payload: playerType) => Action = newAction(SET_WINNER);
+export const resetGame: () => Action = newAction(RESET_GAME);
