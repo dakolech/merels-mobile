@@ -5,7 +5,7 @@ import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, se
     cachePawnPosition, highlightAvailableBox, removeMillInBox } from './game.actions';
 import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage } from './game.messages';
 import { PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
-    TAKE_AFTER_MOVE_ACTION } from './game.reducer';
+    TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP } from './game.reducer';
 
 function getNextBox(board, currentBox, direction) {
   const tempBox = {
@@ -154,6 +154,8 @@ function* nextMove({ payload: { row, column } }) {
   const opponent = player === PLAYER1 ? PLAYER2 : PLAYER1;
   const pawnsInHand = state.getIn(['game', player, 'pawnsInHand']);
   const opponentPawnsInHand = state.getIn(['game', opponent, 'pawnsInHand']);
+  const pawnsOnBoard = state.getIn(['game', player, 'pawnsOnBoard']);
+  const opponentPawnsOnBoard = state.getIn(['game', opponent, 'pawnsOnBoard']);
   const opponentName = state.getIn(['game', opponent, 'name']);
   const playerName = state.getIn(['game', player, 'name']);
   const board = state.getIn(['game', 'board']);
@@ -161,6 +163,7 @@ function* nextMove({ payload: { row, column } }) {
   const currentAction = state.getIn(['game', 'currentAction']);
   const selectedBox = board.getIn([column, row]);
   const cachedPawn = state.getIn(['game', 'cacheSelectedPawn']);
+  const moveOrJump = pawns => pawns === 3 ? SELECT_TO_JUMP : SELECT_TO_MOVE;
 
   if (pawnsInHand > 0 && currentAction === PUT_ACTION && !selectedBox.get('pawn')) {
     yield put(setPawn({ row, column }));
@@ -184,14 +187,14 @@ function* nextMove({ payload: { row, column } }) {
   }
 
   if (currentAction === TAKE_ACTION && selectedBox.get('pawn') && selectedBox.get('isHighlighted')) {
-    yield put(removePawnFromBoard({ row, column }));
+    yield put(removePawnFromBoard({ row, column, player: opponent }));
     yield put(setNextMoveText({ text: putPawnMessage(opponentName) }));
     yield put(changeActionType({ type: PUT_ACTION }));
     yield put(cleanHighlightedPawns());
     yield put(nextPlayer());
 
     if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== TAKE_ACTION) {
-      yield put(changeActionType({ type: SELECT_TO_MOVE }));
+      yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
       yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     }
   }
@@ -227,15 +230,15 @@ function* nextMove({ payload: { row, column } }) {
       yield handleTakeMove(board, opponent, column, row, playerName, TAKE_AFTER_MOVE_ACTION);
     } else {
       yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
-      yield put(changeActionType({ type: SELECT_TO_MOVE }));
+      yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
       yield put(nextPlayer());
     }
   }
 
   if (currentAction === TAKE_AFTER_MOVE_ACTION && selectedBox.get('pawn') && selectedBox.get('isHighlighted')) {
-    yield put(removePawnFromBoard({ row, column }));
+    yield put(removePawnFromBoard({ row, column, player: opponent }));
     yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
-    yield put(changeActionType({ type: SELECT_TO_MOVE }));
+    yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
     yield put(cleanHighlightedPawns());
     yield put(nextPlayer());
   }

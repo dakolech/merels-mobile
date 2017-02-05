@@ -110,5 +110,5 @@ function convertToDraw(board) {
 export const board = generateBoard(nineMerelsBoard);
 export const boardToDraw = convertToDraw(board);
 
-export const playerPawns = 3;
+export const playerPawns = 4;
 export const millSize = 3;

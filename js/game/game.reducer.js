@@ -12,6 +12,7 @@ export const PLAYER2 = 'PLAYER2';
 export const PUT_ACTION = 'PUT_ACTION';
 export const TAKE_ACTION = 'TAKE_ACTION';
 export const SELECT_TO_MOVE = 'SELECT_TO_MOVE';
+export const SELECT_TO_JUMP = 'SELECT_TO_JUMP';
 export const MOVE_ACTION = 'MOVE_ACTION';
 export const TAKE_AFTER_MOVE_ACTION = 'TAKE_AFTER_MOVE_ACTION';
 
@@ -60,8 +61,9 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
     [REMOVE_PAWN_FROM_HAND]: () => state
       .updateIn([action.payload.player, 'pawnsInHand'], pawnsInHand => pawnsInHand - 1)
       .updateIn([action.payload.player, 'pawnsOnBoard'], pawnsOnBoard => pawnsOnBoard + 1),
-    [REMOVE_PAWN_FROM_BOARD]: () =>
-      state.setIn(['board', action.payload.column, action.payload.row, 'pawn'], undefined),
+    [REMOVE_PAWN_FROM_BOARD]: () => state
+      .setIn(['board', action.payload.column, action.payload.row, 'pawn'], undefined)
+      .updateIn([action.payload.player, 'pawnsOnBoard'], pawnsOnBoard => pawnsOnBoard - 1),
     [SET_NEXT_MOVE_TEXT]: () => state.set('nextMove', action.payload.text),
     [SET_MILL_IN_BOX]: () =>
       state.updateIn(['board', action.payload.column, action.payload.row, 'isInMill'], v => v + 1),
