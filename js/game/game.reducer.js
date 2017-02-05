@@ -3,7 +3,8 @@ import { Dimensions } from 'react-native';
 import { board, playerPawns, boardToDraw, millSize } from './board.generator';
 import { SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
     SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX, CHANGE_ACTION_TYPE, HIGHLIGHT_AVAILABLE_PAWN,
-    CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_MILL_IN_BOX } from './game.actions';
+    CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_MILL_IN_BOX,
+    HIGHLIGHT_ALL_AVAILABLE_BOXES } from './game.actions';
 import { padding } from './components/board.styles';
 import { putPawnMessage } from './game.messages';
 
@@ -92,6 +93,12 @@ export function gameReducer(state: Map = initialStateGame, action): Map {
       state
         .setIn(['cacheSelectedPawn', 'column'], action.payload.column)
         .setIn(['cacheSelectedPawn', 'row'], action.payload.row),
+    [HIGHLIGHT_ALL_AVAILABLE_BOXES]: () =>
+      state.update('board', columns =>
+        columns.map(row =>
+          row.map(box => box.get('isPawnBox') && !box.get('pawn') ? box.set('isHighlighted', true) : box),
+        ),
+      ),
   };
   const stateChangingFn: () => Map = actions[action.type];
   return !!stateChangingFn ? stateChangingFn() : state;

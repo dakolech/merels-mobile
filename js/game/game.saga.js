@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, setMillInBox,
     changeActionType, highlightAvailablePawns, removePawnFromBoard, cleanHighlightedPawns,
-    cachePawnPosition, highlightAvailableBox, removeMillInBox } from './game.actions';
+    cachePawnPosition, highlightAvailableBox, removeMillInBox, highlightAllAvailableBoxes } from './game.actions';
 import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage } from './game.messages';
 import { PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
     TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP } from './game.reducer';
@@ -58,7 +58,7 @@ function countAvailablePawns(board, player) {
   return board
     .reduce((accPar, currPar) =>
       currPar.reduce((acc, curr) =>
-        curr.get('pawn') === player ? acc + 1 : acc
+        curr.get('pawn') === player && curr.get('isInMill') === 0 ? acc + 1 : acc
       , accPar)
     , 0);
 }
@@ -165,6 +165,11 @@ function* nextMove({ payload: { row, column } }) {
   const cachedPawn = state.getIn(['game', 'cacheSelectedPawn']);
   const moveOrJump = pawns => pawns === 3 ? SELECT_TO_JUMP : SELECT_TO_MOVE;
 
+  if (opponentPawnsInHand === 0 && pawnsInHand === 0 && currentAction !== 'TAKE_ACTION') {
+    yield put(changeActionType({ type: SELECT_TO_MOVE }));
+    yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
+  }
+
   if (pawnsInHand > 0 && currentAction === PUT_ACTION && !selectedBox.get('pawn')) {
     yield put(setPawn({ row, column }));
     yield put(removePawnFromHand({ player }));
@@ -177,19 +182,28 @@ function* nextMove({ payload: { row, column } }) {
         yield put(setNextMoveText({ text: putPawnMessage(opponentName) }));
         yield put(nextPlayer());
       }
+      if (opponentPawnsInHand === 0 && pawnsInHand === 1 && !isMill) {
+        yield put(changeActionType({ type: SELECT_TO_MOVE }));
+        yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
+      }
     } else {
       yield put(nextPlayer());
     }
-    if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== 'TAKE_ACTION') {
-      yield put(changeActionType({ type: SELECT_TO_MOVE }));
-      yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
-    }
   }
 
-  if (currentAction === TAKE_ACTION && selectedBox.get('pawn') && selectedBox.get('isHighlighted')) {
+  if (currentAction === TAKE_ACTION &&
+    selectedBox.get('pawn') &&
+    selectedBox.get('isHighlighted') &&
+    selectedBox.get('isInMill') === 0
+  ) {
     yield put(removePawnFromBoard({ row, column, player: opponent }));
-    yield put(setNextMoveText({ text: putPawnMessage(opponentName) }));
-    yield put(changeActionType({ type: PUT_ACTION }));
+    if (opponentPawnsInHand === 0 && pawnsInHand === 0) {
+      yield put(changeActionType({ type: SELECT_TO_MOVE }));
+      yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
+    } else {
+      yield put(setNextMoveText({ text: putPawnMessage(opponentName) }));
+      yield put(changeActionType({ type: PUT_ACTION }));
+    }
     yield put(cleanHighlightedPawns());
     yield put(nextPlayer());
 
@@ -199,8 +213,13 @@ function* nextMove({ payload: { row, column } }) {
     }
   }
 
-  if (currentAction === SELECT_TO_MOVE && selectedBox.get('pawn') === player) {
-    const availableBoxes = yield findAvailableBoxes(board, selectedBox);
+  if ((currentAction === SELECT_TO_MOVE || currentAction === SELECT_TO_JUMP) && selectedBox.get('pawn') === player) {
+    let availableBoxes = { length: 1 };
+    if (pawnsOnBoard === 3) {
+      yield put(highlightAllAvailableBoxes());
+    } else {
+      availableBoxes = yield findAvailableBoxes(board, selectedBox);
+    }
     if (availableBoxes.length > 0) {
       yield put(cachePawnPosition({ row, column }));
       yield put(changeActionType({ type: MOVE_ACTION }));
@@ -210,7 +229,11 @@ function* nextMove({ payload: { row, column } }) {
 
   if (currentAction === MOVE_ACTION && selectedBox.get('pawn') === player) {
     yield put(cleanHighlightedPawns());
-    yield findAvailableBoxes(board, selectedBox);
+    if (pawnsOnBoard === 3) {
+      yield put(highlightAllAvailableBoxes());
+    } else {
+      yield findAvailableBoxes(board, selectedBox);
+    }
     yield put(cachePawnPosition({ row, column }));
   }
 
@@ -235,7 +258,11 @@ function* nextMove({ payload: { row, column } }) {
     }
   }
 
-  if (currentAction === TAKE_AFTER_MOVE_ACTION && selectedBox.get('pawn') && selectedBox.get('isHighlighted')) {
+  if (currentAction === TAKE_AFTER_MOVE_ACTION &&
+    selectedBox.get('pawn') &&
+    selectedBox.get('isHighlighted') &&
+    selectedBox.get('isInMill') === 0
+  ) {
     yield put(removePawnFromBoard({ row, column, player: opponent }));
     yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     yield put(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));

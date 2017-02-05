@@ -42,6 +42,7 @@ export const REMOVE_MILL_IN_BOX = 'REMOVE_MILL_IN_BOX';
 export const CHANGE_ACTION_TYPE = 'CHANGE_ACTION_TYPE';
 export const HIGHLIGHT_AVAILABLE_PAWN = 'HIGHLIGHT_AVAILABLE_PAWN';
 export const HIGHLIGHT_AVAILABLE_BOX = 'HIGHLIGHT_AVAILABLE_BOX';
+export const HIGHLIGHT_ALL_AVAILABLE_BOXES = 'HIGHLIGHT_ALL_AVAILABLE_BOXES';
 export const CACHE_PAWN_POSITION = 'CACHE_PAWN_POSITION';
 export const CLEAN_HIGHLIGHTED_PAWNS = 'CLEAN_HIGHLIGHTED_PAWNS';
 
@@ -60,5 +61,6 @@ export const removeMillInBox: (payload: setPawnType) => Action = newAction(REMOV
 export const changeActionType: (payload: actionType) => Action = newAction(CHANGE_ACTION_TYPE);
 export const highlightAvailablePawns: (payload: playerType) => Action = newAction(HIGHLIGHT_AVAILABLE_PAWN);
 export const highlightAvailableBox: (payload: setPawnType) => Action = newAction(HIGHLIGHT_AVAILABLE_BOX);
+export const highlightAllAvailableBoxes: () => Action = newAction(HIGHLIGHT_ALL_AVAILABLE_BOXES);
 export const cachePawnPosition: (payload: setPawnType) => Action = newAction(CACHE_PAWN_POSITION);
 export const cleanHighlightedPawns: () => Action = newAction(CLEAN_HIGHLIGHTED_PAWNS);
